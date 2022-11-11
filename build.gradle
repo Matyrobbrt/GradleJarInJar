@@ -1,0 +1,36 @@
+plugins {
+    id 'idea'
+    id 'maven-publish'
+    id 'groovy-gradle-plugin'
+    id 'org.cadixdev.licenser' version '0.6.1'
+    id 'com.gradle.plugin-publish' version '0.18.0'
+}
+
+group = 'com.matyrobbrt.gradle.jarinjar'
+archivesBaseName = 'jarinjar'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.maven:maven-artifact:3.8.5'
+}
+
+pluginBundle {
+    vcsUrl = 'https://github.com/Matyrobbrt/GradleJarInJar'
+    website = 'https://github.com/Matyrobbrt/GradleJarInJar'
+}
+
+gradlePlugin {
+    plugins {
+        forgejij {
+            id = 'com.matyrobbrt.jarinjar'
+            displayName = 'JarInJar'
+            description = 'A Gradle plugin for including jars in jars'
+            implementationClass = 'com.matyrobbrt.gradle.jarinjar.JarInJarPlugin'
+        }
+    }
+}
+
+java.withSourcesJar()

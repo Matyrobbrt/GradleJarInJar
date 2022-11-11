@@ -1,0 +1,49 @@
+import com.matyrobbrt.gradle.jarinjar.task.AbstractJarInJarTask
+import com.matyrobbrt.gradle.jarinjar.task.ForgeJarInJarTask
+
+plugins {
+    id 'java'
+    id 'com.matyrobbrt.jarinjar' version '1.0.0'
+}
+
+configurations {
+    forgejij {}
+    nometadata {}
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    forgejij('com.google.code.gson:gson:2.10') {
+        jij.onDependency(it) {
+            versionRange nextMajor
+        }
+    }
+    forgejij('org.apache.maven:maven-artifact:3.8.5') {
+        jij.onDependency(it) {
+            path = { art, dep -> "maven-artifact/${art.file.name}" }
+            includeMetadata = false
+        }
+    }
+
+    nometadata('org.ow2.asm:asm:9.3') {
+        jij.onDependency(it) {
+            obfuscated = true
+        }
+    }
+}
+
+tasks.create('forgeJiJ', ForgeJarInJarTask) {
+    group = 'jij'
+    archiveBaseName.set('forgejij')
+    fromConfiguration(configurations.forgejij)
+}
+
+tasks.create('nometadataJiJ', AbstractJarInJarTask) {
+    group = 'jij'
+    archiveBaseName.set('nometadata')
+    fromConfiguration(configurations.nometadata)
+    jarDestinationDirectory.set('jars')
+}
