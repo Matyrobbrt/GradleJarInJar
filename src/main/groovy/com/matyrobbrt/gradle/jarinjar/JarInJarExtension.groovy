@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Matyrobbrt
+ * SPDX-License-Identifier: MIT
+ */
+
 package com.matyrobbrt.gradle.jarinjar
 
 import com.matyrobbrt.gradle.jarinjar.util.DependencyUtils
@@ -30,7 +35,7 @@ abstract class JarInJarExtension {
     JiJDependencyData resolve(ModuleDependency dependency, Configuration depConfiguration) {
         final resolved = DependencyUtils.getResolvedDependency(project, dependency)
         final conf = getData(depConfiguration.name)
-        JiJDependencyData configuration = dependencyConfigurationData[dependency]
+        JiJDependencyData configuration = dependencyConfigurationData[dependency] ?: conf.byDependencyData[dependency]
         return conf.applyData(resolved, configuration ?: new JiJDependencyData())
     }
 

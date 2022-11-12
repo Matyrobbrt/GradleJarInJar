@@ -18,6 +18,7 @@ dependencies {
 }
 
 pluginBundle {
+    tags = ['minecraft', 'jar-in-jar']
     vcsUrl = 'https://github.com/Matyrobbrt/GradleJarInJar'
     website = 'https://github.com/Matyrobbrt/GradleJarInJar'
 }
@@ -31,6 +32,10 @@ gradlePlugin {
             implementationClass = 'com.matyrobbrt.gradle.jarinjar.JarInJarPlugin'
         }
     }
+}
+
+license {
+    header = rootProject.file('licenseheader.txt')
 }
 
 java.withSourcesJar()

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Matyrobbrt
+ * SPDX-License-Identifier: MIT
+ */
+
 package com.matyrobbrt.gradle.jarinjar.transform
 
 
@@ -14,7 +19,7 @@ import java.util.zip.ZipEntry
 
 @CompileStatic
 @MapConstructor
-class JiJDependencyFixerTransformer implements ArtifactTransformer {
+class ForgeManifestFixerTransformer implements ArtifactTransformer {
     String modType
     String modulePrefix
 
@@ -26,8 +31,9 @@ class JiJDependencyFixerTransformer implements ArtifactTransformer {
 
             final manifest = new Manifest(inputOs.manifest)
             manifest.mainAttributes.putValue('FMLModType', modType)
-            // TODO do we actually want to replace the module name?
-            manifest.mainAttributes.putValue('Automatic-Module-Name', (modulePrefix + '.' + dependency.group() + '.' + dependency.artifact()).replace('-', '.'))
+            if (!manifest.mainAttributes.getValue('Automatic-Module-Name')) {
+                manifest.mainAttributes.putValue('Automatic-Module-Name', (modulePrefix + '.' + dependency.group() + '.' + dependency.artifact()).replace('-', '.'))
+            }
             depOs.putNextEntry(new ZipEntry(JarFile.MANIFEST_NAME))
             manifest.write(depOs)
             depOs.closeEntry()
@@ -54,6 +60,6 @@ class JiJDependencyFixerTransformer implements ArtifactTransformer {
 
     @Override
     String hash() {
-        return HashFunction.SHA1.hash('jijdepfix:' + modType + ';' + modulePrefix)
+        return HashFunction.SHA1.hash('forgemanifestfix:' + modType + ';' + modulePrefix)
     }
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Matyrobbrt
+ * SPDX-License-Identifier: MIT
+ */
+
 package com.matyrobbrt.gradle.jarinjar.task
 
 import com.matyrobbrt.gradle.jarinjar.util.PrivateJavaCalls

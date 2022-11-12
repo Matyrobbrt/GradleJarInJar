@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Matyrobbrt
+ * SPDX-License-Identifier: MIT
+ */
+
 package com.matyrobbrt.gradle.jarinjar.util
 
 import groovy.transform.CompileStatic

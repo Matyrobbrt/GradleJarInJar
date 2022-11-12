@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Matyrobbrt
+ * SPDX-License-Identifier: MIT
+ */
+
 //file:noinspection unused
 package com.matyrobbrt.gradle.jarinjar.data
 
