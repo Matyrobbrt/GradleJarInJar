@@ -131,7 +131,6 @@ abstract class AbstractJarInJarTask extends Jar {
         Map<String, String> versions = new HashMap<>()
         return { JiJDependency dep ->
             if (!files.add(dep.file())) {
-                println 'Removing duplicate: ' + dep
                 return false
             }
             String oldVersion = versions.put(dep.group() + ':' + dep.artifact(), dep.version())
