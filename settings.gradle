@@ -1,1 +1,15 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        exclusiveContent {
+            forRepositories(maven {
+                url 'https://maven.moddinginquisition.org/releases'
+            })
+            filter {
+                includeGroupByRegex('io\\.github\\.groovymc.*')
+            }
+        }
+    }
+}
+
 rootProject.name = 'jarinjar'

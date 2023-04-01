@@ -4,7 +4,21 @@ plugins {
     id 'groovy-gradle-plugin'
     id 'org.cadixdev.licenser' version '0.6.1'
     id 'com.gradle.plugin-publish' version '0.18.0'
+    id 'io.github.groovymc.simpleci' version '0.1.+'
 }
+
+project.ext.set('gradle.publish.key', System.getenv('PLUGIN_PORTAL_KEY') ?: findProperty('gradle.publish.key'))
+project.ext.set('gradle.publish.secret=', System.getenv('PLUGIN_PORTAL_SECRET') ?: findProperty('gradle.publish.secret'))
+
+final startTag = '1.1'
+versioning {
+    fromTag.set(startTag)
+}
+changelog {
+    start.set(startTag)
+}
+
+println("Version: ${project.version = versioning.calculatedVersion}")
 
 group = 'com.matyrobbrt.gradle.jarinjar'
 archivesBaseName = 'jarinjar'
@@ -38,4 +52,17 @@ license {
     header = rootProject.file('licenseheader.txt')
 }
 
-java.withSourcesJar()
+java {
+    withSourcesJar()
+    toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            named('pluginMaven').configure {
+                changelog.addArtifact(it)
+            }
+        }
+    }
+}
