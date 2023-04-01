@@ -48,7 +48,7 @@ abstract class ForgeJarInJarTask extends WithMetadataJarInJarTask<HashMap> {
         if (!Files.exists(path)) {
             Files.createDirectories(path.parent)
         }
-        Files.writeString(path, JsonOutput.prettyPrint(new JsonBuilder(getMetadata()).toString()))
+        Files.write(path, JsonOutput.prettyPrint(new JsonBuilder(getMetadata()).toString()).getBytes("UTF-8"))
         return file
     }
 }

@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public interface TransformerManager {
             if (!Files.exists(file)) {
                 Files.createDirectories(file.getParent());
             }
-            try (final var out = new ObjectOutputStream(Files.newOutputStream(file))) {
+            try (final ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(file))) {
                 out.writeObject(names);
             }
         }
@@ -75,7 +76,7 @@ public interface TransformerManager {
             if (!Files.exists(file)) {
                 names = new HashMap<>();
             } else {
-                try (final var is = new ObjectInputStream(Files.newInputStream(file))) {
+                try (final ObjectInputStream is = new ObjectInputStream(Files.newInputStream(file))) {
                     names = (HashMap<TransformerData, String>) is.readObject();
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
@@ -83,6 +84,68 @@ public interface TransformerManager {
             }
         }
 
-        private record TransformerData(HashSet<String> transformerHashes, String group, String artifact, String version, String fileHash) implements Serializable {}
+        private static final class TransformerData implements Serializable {
+            private static final long serialVersionUID = 8067653141683777986L;
+            private final HashSet<String> transformerHashes;
+            private final String group;
+            private final String artifact;
+            private final String version;
+            private final String fileHash;
+
+            private TransformerData(HashSet<String> transformerHashes, String group, String artifact, String version, String fileHash) {
+                this.transformerHashes = transformerHashes;
+                this.group = group;
+                this.artifact = artifact;
+                this.version = version;
+                this.fileHash = fileHash;
+            }
+
+            public HashSet<String> transformerHashes() {
+                return transformerHashes;
+            }
+
+            public String group() {
+                return group;
+            }
+
+            public String artifact() {
+                return artifact;
+            }
+
+            public String version() {
+                return version;
+            }
+
+            public String fileHash() {
+                return fileHash;
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (obj == this) return true;
+                if (obj == null || obj.getClass() != this.getClass()) return false;
+                final TransformerData that = (TransformerData) obj;
+                return Objects.equals(this.transformerHashes, that.transformerHashes) &&
+                        Objects.equals(this.group, that.group) &&
+                        Objects.equals(this.artifact, that.artifact) &&
+                        Objects.equals(this.version, that.version) &&
+                        Objects.equals(this.fileHash, that.fileHash);
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(transformerHashes, group, artifact, version, fileHash);
+            }
+
+            @Override
+            public String toString() {
+                return "TransformerData[" +
+                        "transformerHashes=" + transformerHashes + ", " +
+                        "group=" + group + ", " +
+                        "artifact=" + artifact + ", " +
+                        "version=" + version + ", " +
+                        "fileHash=" + fileHash + ']';
+            }
+        }
     }
 }

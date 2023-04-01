@@ -8,6 +8,7 @@ package com.matyrobbrt.gradle.jarinjar.transform
 
 import com.matyrobbrt.gradle.jarinjar.util.HashFunction
 import com.matyrobbrt.gradle.jarinjar.data.JiJDependency
+import com.matyrobbrt.gradle.jarinjar.util.IOUtils
 import groovy.transform.CompileStatic
 import groovy.transform.MapConstructor
 
@@ -45,7 +46,7 @@ class ForgeManifestFixerTransformer implements ArtifactTransformer {
                     return input
                 }
                 depOs.putNextEntry(makeNewEntry(entry))
-                depOs.write(inputOs.readAllBytes())
+                depOs.write(IOUtils.readAllBytes(inputOs))
                 depOs.closeEntry()
             }
         }

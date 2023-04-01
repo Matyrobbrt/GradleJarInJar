@@ -5,6 +5,7 @@
 
 package com.matyrobbrt.gradle.jarinjar.task
 
+import com.matyrobbrt.gradle.jarinjar.util.IOUtils
 import com.matyrobbrt.gradle.jarinjar.util.PrivateJavaCalls
 import groovy.transform.CompileStatic
 import com.matyrobbrt.gradle.jarinjar.data.JiJDependencyData
@@ -25,6 +26,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.util.internal.ConfigureUtil
 
+import java.nio.channels.FileChannel
 import java.nio.file.Files
 import java.util.concurrent.Callable
 import java.util.function.Predicate
@@ -62,7 +64,7 @@ abstract class AbstractJarInJarTask extends Jar {
     }
 
     void fromConfiguration(Configuration... configurations) {
-        provider(new JiJDependency.ConfigurationDependencyProvider(project, List.of(configurations)))
+        provider(new JiJDependency.ConfigurationDependencyProvider(project, Arrays.asList(configurations)))
     }
 
     void fromJar(Jar jar, @DelegatesTo(JiJDependencyData) Closure configuration = null) {
@@ -119,7 +121,7 @@ abstract class AbstractJarInJarTask extends Jar {
     }
 
     private static byte[] applyTransformers(InputStream input, JiJDependency dependency) {
-        byte[] bytes = input.readAllBytes()
+        byte[] bytes = IOUtils.readAllBytes(input)
         dependency.transformers().each {
             bytes = it.transform(dependency, bytes)
         }

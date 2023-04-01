@@ -10,10 +10,17 @@ import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.ResolvedModuleVersion;
 
+import java.util.Objects;
+
 @NonNullApi
-public record ResolvedModuleVersionImpl(
-        ModuleVersionIdentifier id
-) implements ResolvedModuleVersion {
+public final class ResolvedModuleVersionImpl implements ResolvedModuleVersion {
+    private final ModuleVersionIdentifier id;
+
+    public ResolvedModuleVersionImpl(
+            ModuleVersionIdentifier id
+    ) {
+        this.id = id;
+    }
 
     public ResolvedModuleVersionImpl(String group, String name, String version, ModuleIdentifier module) {
         this(new ModuleVersionIdentifier() {
@@ -57,4 +64,28 @@ public record ResolvedModuleVersionImpl(
     public ModuleVersionIdentifier getId() {
         return id;
     }
+
+    public ModuleVersionIdentifier id() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        ResolvedModuleVersionImpl that = (ResolvedModuleVersionImpl) obj;
+        return Objects.equals(this.id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "ResolvedModuleVersionImpl[" +
+                "id=" + id + ']';
+    }
+
 }
