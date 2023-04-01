@@ -7,9 +7,6 @@ plugins {
     id 'io.github.groovymc.simpleci' version '0.1.+'
 }
 
-project.ext.set('gradle.publish.key', System.getenv('PLUGIN_PORTAL_KEY') ?: findProperty('gradle.publish.key'))
-project.ext.set('gradle.publish.secret=', System.getenv('PLUGIN_PORTAL_SECRET') ?: findProperty('gradle.publish.secret'))
-
 final startTag = '1.1'
 versioning {
     fromTag.set(startTag)
