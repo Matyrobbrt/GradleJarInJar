@@ -70,7 +70,7 @@ object Matyrobbrt_GradleJarInJar_Build : BuildType({
 
         gradle {
             name = "Build Gradle Project"
-            tasks = "clean publish"
+            tasks = "clean publishPlugins"
         }
     }
 })
