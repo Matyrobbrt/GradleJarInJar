@@ -14,6 +14,8 @@ plugins {
 Example usage for Forge:
 ```gradle
 tasks.register('createSomeJarJar', com.matyrobbrt.gradle.jarinjar.task.ForgeJarInJarTask).configure {
+    from(sourceSets.main.output) // Include the contents of the main sourceset. These will be in the root of the file, just like in a normal jar
+    
     archiveBaseName.set('somejarjar') // Set the jar file name to `somejarjar-$version.jar`. You can instead change the archiveClassifier if, for example, you want to have an -all classifier
     fromConfiguration(configurations.shade) // Pull dependencies from the `shade` configuration
     fromJar(tasks.otherJar) { // Include the jar created by the `otherJar` task. The artifact ID will be the jar archiveBaseName, the group will be the project group and the version the archiveVersion
