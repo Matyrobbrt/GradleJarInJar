@@ -120,6 +120,9 @@ class JiJDependencyData {
     void versionRange(DependencyAction<String> action) {
         versionRange = action
     }
+    void setVersionRange(DependencyAction<String> action) {
+        versionRange = action
+    }
 
     void path(@ClosureParams(
             value = SimpleType, options = ['org.gradle.api.artifacts.ResolvedArtifact', 'org.gradle.api.artifacts.ModuleDependency']
