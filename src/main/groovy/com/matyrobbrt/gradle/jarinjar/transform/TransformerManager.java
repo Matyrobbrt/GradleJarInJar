@@ -38,10 +38,16 @@ public interface TransformerManager {
 
         @Override
         public String getName(JiJDependency dependency) throws IOException {
+            final HashSet<String> transformerHashes = dependency.transformers().stream()
+                    .map(ArtifactTransformer::hash)
+                    .collect(Collectors.toCollection(HashSet::new));
+
+            if (!transformerHashes.isEmpty() && transformerHashes.contains(null)) {
+                return appendExtension(UUID.randomUUID().toString(), dependency.file().getName()); // If a transformer can't be hashed don't allow the jar to be cached
+            }
+
             final TransformerData data = new TransformerData(
-                    dependency.transformers().stream()
-                            .map(ArtifactTransformer::hash)
-                            .collect(Collectors.toCollection(HashSet::new)),
+                    transformerHashes,
                     dependency.group(), dependency.artifact(), dependency.version(),
                     HashFunction.MD5.hash(dependency.file())
             );

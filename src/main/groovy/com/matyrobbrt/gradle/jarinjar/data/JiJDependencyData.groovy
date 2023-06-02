@@ -7,12 +7,14 @@
 package com.matyrobbrt.gradle.jarinjar.data
 
 import com.matyrobbrt.gradle.jarinjar.transform.ArtifactTransformer
+import com.matyrobbrt.gradle.jarinjar.transform.FilterContentsTransformer
 import com.matyrobbrt.gradle.jarinjar.util.DependencyUtils
 import groovy.transform.CompileStatic
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.artifacts.ResolvedArtifact
+import org.gradle.api.tasks.util.PatternFilterable
 
 @CompileStatic
 class JiJDependencyData {
@@ -145,6 +147,10 @@ class JiJDependencyData {
 
     void transform(Class<? extends ArtifactTransformer> transformer) {
         this.transformers.add(transformer.getDeclaredConstructor().newInstance())
+    }
+
+    void filterContents(@DelegatesTo(PatternFilterable) Closure configure) {
+        this.transformers.add(new FilterContentsTransformer(configure))
     }
 
     JiJDependency build(ResolvedArtifact artifact, ModuleDependency dependency) {

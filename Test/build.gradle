@@ -31,17 +31,22 @@ dependencies {
     nometadata('org.ow2.asm:asm:9.3') {
         jij.onDependency(it) {
             obfuscated = true
+            filterContents {
+                exclude 'module-info.class'
+                include 'org/objectweb/asm/Method**.class'
+                exclude 'org/objectweb/asm/MethodWriter.class'
+            }
         }
     }
 }
 
-tasks.create('forgeJiJ', ForgeJarInJarTask) {
+tasks.register('forgeJiJ', ForgeJarInJarTask) {
     group = 'jij'
     archiveBaseName.set('forgejij')
     fromConfiguration(configurations.forgejij)
 }
 
-tasks.create('nometadataJiJ', AbstractJarInJarTask) {
+tasks.register('nometadataJiJ', AbstractJarInJarTask) {
     group = 'jij'
     archiveBaseName.set('nometadata')
     fromConfiguration(configurations.nometadata)
