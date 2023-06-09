@@ -7,7 +7,7 @@ plugins {
     id 'io.github.groovymc.simpleci' version '0.1.+'
 }
 
-final startTag = '1.1'
+final startTag = '1.2'
 versioning {
     fromTag.set(startTag)
 }

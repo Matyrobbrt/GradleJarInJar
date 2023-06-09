@@ -23,10 +23,9 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.jvm.tasks.Jar
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.util.internal.ConfigureUtil
 
-import java.nio.channels.FileChannel
 import java.nio.file.Files
 import java.util.concurrent.Callable
 import java.util.function.Predicate
